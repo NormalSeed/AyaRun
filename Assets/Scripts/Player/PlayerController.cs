@@ -16,7 +16,10 @@ public class PlayerController : MonoBehaviour
     {
         _status = GetComponent<PlayerStatus>();
         _movement = GetComponent<PlayerMovement>();
-        Debug.Log($"플레이어 체력: {_status.MaxHp}");
+        // Test
+        _status.CurrentHp.Value = _status.MaxHp;
+        Debug.Log($"플레이어 체력: {_status.CurrentHp.Value}");
+
     }
 
     private void HandlePlayerControll()
@@ -24,6 +27,15 @@ public class PlayerController : MonoBehaviour
         if (!isControllActivated) return;
 
         HandleMovement();
+        // Test
+        if (Input.GetKeyDown(KeyCode.Z))
+        {
+            TakeDamage(1);
+        }
+        if (Input.GetKeyDown(KeyCode.X))
+        {
+            Recover(1);
+        }
     }
 
     private void HandleMovement()
@@ -50,6 +62,7 @@ public class PlayerController : MonoBehaviour
     {
         if (_status.CurrentHp.Value >= _status.MaxHp) return;
         else _status.CurrentHp.Value += healAmount;
+        Debug.Log($"플레이어 체력: {_status.CurrentHp.Value}");
     }
 
     private void Dead()
