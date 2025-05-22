@@ -20,7 +20,7 @@ public class PlayerStatus : MonoBehaviour
     public ObservableProperty<int> CurrentHp { get; private set; } = new();
 
     // Player Action---
-    public ObservableProperty<bool> IsMoving { get; private set; } = new();
+    public ObservableProperty<bool> IsRunning { get; private set; } = new();
     public ObservableProperty<bool> IsJumping { get; private set; } = new();
     public ObservableProperty<bool> IsAttacking { get; private set; } = new();
 }
