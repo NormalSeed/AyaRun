@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class PlayerController : MonoBehaviour
@@ -8,8 +9,7 @@ public class PlayerController : MonoBehaviour
 
     private PlayerStatus _status;
     private PlayerMovement _movement;
-
-    [SerializeField] private Animator _animator;
+    private Animator _animator;
 
     private void Awake() => Init();
     private void OnEnable() => SubscribeEvents();
@@ -20,6 +20,7 @@ public class PlayerController : MonoBehaviour
     {
         _status = GetComponent<PlayerStatus>();
         _movement = GetComponent<PlayerMovement>();
+        _animator = GetComponentInChildren<Animator>();
     }
 
     private void HandlePlayerControll()
@@ -41,10 +42,12 @@ public class PlayerController : MonoBehaviour
 
     private void HandleSkill()
     {
-        if (Input.GetKeyDown(KeyCode.Q))
+        if (Input.GetKeyDown(KeyCode.Q) && SkillManager.Instance._qSkill.CanUseSkill())
         {
             SkillManager.Instance._qSkill.CanUseSkill();
+            _status.IsUsingQ.Value = true;
         }
+        else _status.IsUsingQ.Value = false;
     }
 
     public void TakeDamage(int damage)
@@ -65,20 +68,20 @@ public class PlayerController : MonoBehaviour
         Debug.Log($"플레이어 체력: {_status.CurrentHp.Value}");
     }
 
-    private void Dead()
+    public void Dead()
     {
         Debug.Log("플레이어 사망");
     }
 
     public void SubscribeEvents()
     {
-        _status.IsRunning.Subscribe(SetRunAnimation);
+        _status.IsUsingQ.Subscribe(SetQSkillAnimation);
     }
 
     public void UnsubscribeEvents()
     {
-        _status.IsRunning.Unsubscribe(SetRunAnimation);
+        _status.IsUsingQ.Unsubscribe(SetQSkillAnimation);
     }
 
-    private void SetRunAnimation(bool value) => _animator.SetBool("IsRun", value);
+    private void SetQSkillAnimation(bool value) => _animator.SetBool("IsUseQ", value);
 }

@@ -22,5 +22,5 @@ public class PlayerStatus : MonoBehaviour
     // Player Action---
     public ObservableProperty<bool> IsRunning { get; private set; } = new();
     public ObservableProperty<bool> IsJumping { get; private set; } = new();
-    public ObservableProperty<bool> IsAttacking { get; private set; } = new();
+    public ObservableProperty<bool> IsUsingQ { get; private set; } = new();
 }
