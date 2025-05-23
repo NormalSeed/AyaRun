@@ -356,7 +356,7 @@ GameObject:
   - component: {fileID: 818863714}
   m_Layer: 0
   m_Name: Cube
-  m_TagString: Untagged
+  m_TagString: Ground
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -539,11 +539,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!95 &1266742062 stripped
-Animator:
-  m_CorrespondingSourceObject: {fileID: 7072444061582351952, guid: 910177ec26b76c14996c2d53627a6def, type: 3}
-  m_PrefabInstance: {fileID: 45082028}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1889447970
 GameObject:
   m_ObjectHideFlags: 0
@@ -577,7 +572,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4c66680cc1aee92438388c20ac566476, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _animator: {fileID: 1266742062}
 --- !u!4 &1889447972
 Transform:
   m_ObjectHideFlags: 0

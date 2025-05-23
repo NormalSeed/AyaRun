@@ -23,11 +23,17 @@ public class PlayerMovement : MonoBehaviour
         return _rb.velocity;
     }
 
+    public void Rotate()
+    {
+        Vector3 moveDir = new Vector3(Input.GetAxis("Horizontal"), 0, 0);
+        if (moveDir != Vector3.zero)
+        {
+            _playerBody.rotation = Quaternion.LookRotation(moveDir);
+        }
+    }
+
     public void Jump(float jumpPower)
     {
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            _rb.AddForce(Vector3.up * jumpPower, ForceMode.Impulse);
-        }
+        _rb.AddForce(Vector3.up * jumpPower, ForceMode.Impulse);
     }
 }

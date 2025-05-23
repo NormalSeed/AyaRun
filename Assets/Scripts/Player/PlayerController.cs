@@ -6,6 +6,7 @@ using UnityEngine;
 public class PlayerController : MonoBehaviour
 {
     public bool isControllActivated { get; set; } = true;
+    private bool isGrounded;
 
     private PlayerStatus _status;
     private PlayerMovement _movement;
@@ -15,6 +16,14 @@ public class PlayerController : MonoBehaviour
     private void OnEnable() => SubscribeEvents();
     private void Update() => HandlePlayerControll();
     private void OnDisable() => UnsubscribeEvents();
+
+    private void OnCollisionEnter(Collision collision)
+    {
+        if (collision.collider.CompareTag("Ground"))
+        {
+            isGrounded = true;
+        }
+    }
 
     private void Init()
     {
@@ -35,9 +44,18 @@ public class PlayerController : MonoBehaviour
     {
         float moveSpeed = _status.MoveSpeed;
         Vector3 moveDir = _movement.MoveHorizontal(moveSpeed);
-        _status.IsRunning.Value = (moveDir != Vector3.zero);
-        _movement.Jump(_status.JumpPower);
-        _animator.SetFloat("Speed", moveDir.magnitude);
+        _status.IsRunning.Value = (new Vector3(moveDir.x, 0, 0) != Vector3.zero);
+        _movement.Rotate();
+        if (Input.GetKeyDown(KeyCode.Space) && isGrounded)
+        {
+            _movement.Jump(_status.JumpPower);
+            _status.IsJumping.Value = true;
+            isGrounded = false;
+        }
+        else
+        {
+            _status.IsJumping.Value = false;
+        }
     }
 
     private void HandleSkill()
@@ -76,12 +94,18 @@ public class PlayerController : MonoBehaviour
     public void SubscribeEvents()
     {
         _status.IsUsingQ.Subscribe(SetQSkillAnimation);
+        _status.IsRunning.Subscribe(SetRunAnimation);
+        _status.IsJumping.Subscribe(SetJumpAnimation);
     }
 
     public void UnsubscribeEvents()
     {
         _status.IsUsingQ.Unsubscribe(SetQSkillAnimation);
+        _status.IsRunning.Unsubscribe(SetRunAnimation);
+        _status.IsJumping.Unsubscribe(SetJumpAnimation);
     }
 
     private void SetQSkillAnimation(bool value) => _animator.SetBool("IsUseQ", value);
+    private void SetRunAnimation(bool value) => _animator.SetBool("IsRun", value);
+    private void SetJumpAnimation(bool value) => _animator.SetBool("IsJump", value);
 }
